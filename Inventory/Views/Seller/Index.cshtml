@@ -1,0 +1,28 @@
+﻿@model IEnumerable<object>
+
+
+@{
+    System.Collections.Generic.List<Inventory.tblSeller> lstSeller = Model.ToList()[0] as  List<tblSeller>;
+    System.Collections.Generic.List<Inventory.tblLocation> lstLocation = Model.ToList()[1] as  List<tblLocation>;
+}
+
+<h3>
+    <ul>
+        @foreach(var item in lstSeller)
+        {
+            <li>@item.FName @item.MName  @item.LName</li>
+        }
+       
+        </ul>
+    <ul>
+        @foreach(var item in lstLocation)
+        {
+            <li>
+        <li>@item.Address</li>
+        <li>@item.City</li>
+        <li>@item.Phone</li>
+        <li>@item.State</li>
+        <li>@item.Zipcode</li>
+        }
+    </ul>
+</h3>

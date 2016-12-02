@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="InventoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Shipment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeliverId" Type="int" Nullable="false" />
+          <Property Name="FromLocId" Type="int" Nullable="false" />
+          <Property Name="ToLocId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblBuyer">
+          <Key>
+            <PropertyRef Name="BuyerId" />
+          </Key>
+          <Property Name="BuyerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="varchar" MaxLength="30" />
+          <Property Name="MName" Type="varchar" MaxLength="30" />
+          <Property Name="LName" Type="varchar" MaxLength="30" />
+          <Property Name="Verified" Type="bit" Nullable="false" />
+          <Property Name="LocationId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblDelivery">
+          <Key>
+            <PropertyRef Name="DeliverId" />
+          </Key>
+          <Property Name="DeliverId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Medium" Type="varchar(max)" />
+          <Property Name="TrackingNo" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="25" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="BuyerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblLocation">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="25" />
+          <Property Name="Zipcode" Type="int" />
+          <Property Name="Phone" Type="int" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Facebook" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblLogin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="30" />
+          <Property Name="Password" Type="varchar" MaxLength="30" />
+          <Property Name="Access" Type="bit" Nullable="false" />
+          <Property Name="Lock" Type="bit" Nullable="false" />
+          <Property Name="Last_Login" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblPayment">
+          <Key>
+            <PropertyRef Name="PaymentId" />
+          </Key>
+          <Property Name="PaymentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TotalAmount" Type="int" />
+          <Property Name="PaidAmount" Type="int" />
+          <Property Name="RemAmount" Type="int" />
+          <Property Name="PaidStatus" Type="bit" Nullable="false" />
+          <Property Name="TransactionId" Type="int" Nullable="false" />
+          <Property Name="BuyerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="30" />
+          <Property Name="Code" Type="varchar" MaxLength="30" />
+          <Property Name="Size" Type="varchar" MaxLength="30" />
+          <Property Name="Color" Type="varchar" MaxLength="30" />
+          <Property Name="Amount" Type="varchar" MaxLength="30" />
+          <Property Name="Comment" Type="varchar(max)" />
+          <Property Name="SellerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSeller">
+          <Key>
+            <PropertyRef Name="SellerId" />
+          </Key>
+          <Property Name="SellerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="varchar" MaxLength="30" />
+          <Property Name="MName" Type="varchar" MaxLength="30" />
+          <Property Name="LName" Type="varchar" MaxLength="30" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="tblTransaction">
+          <Key>
+            <PropertyRef Name="TranId" />
+          </Key>
+          <Property Name="TranId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Time" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="Method" Type="varchar" MaxLength="30" />
+          <Property Name="PaymentId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Table_Delivery">
+          <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="1" />
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDelivery">
+              <PropertyRef Name="DeliverId" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="DeliverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable_1">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="FromLocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable_2">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="ToLocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBuyer_TotblLocation">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="tblBuyer">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBuyer_TotblLogin">
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="1" />
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLogin">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblBuyer">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDelivery_ToBuyer">
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="1" />
+          <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBuyer">
+              <PropertyRef Name="BuyerId" />
+            </Principal>
+            <Dependent Role="tblDelivery">
+              <PropertyRef Name="BuyerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDelivery_ToProduct">
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1" />
+          <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="tblDelivery">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPayment_ToBuyer">
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="1" />
+          <End Role="tblPayment" Type="Self.tblPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBuyer">
+              <PropertyRef Name="BuyerId" />
+            </Principal>
+            <Dependent Role="tblPayment">
+              <PropertyRef Name="BuyerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_toSeller">
+          <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSeller">
+              <PropertyRef Name="SellerId" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="SellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSeller_ToLocation">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="0..1" />
+          <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="tblSeller">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSeller_ToUser">
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="0..1" />
+          <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLogin">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblSeller">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTransaction_ToPayment">
+          <End Role="tblPayment" Type="Self.tblPayment" Multiplicity="1" />
+          <End Role="tblTransaction" Type="Self.tblTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPayment">
+              <PropertyRef Name="PaymentId" />
+            </Principal>
+            <Dependent Role="tblTransaction">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventoryModelStoreContainer">
+          <EntitySet Name="Shipment" EntityType="Self.Shipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblBuyer" EntityType="Self.tblBuyer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblDelivery" EntityType="Self.tblDelivery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLocation" EntityType="Self.tblLocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLogin" EntityType="Self.tblLogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPayment" EntityType="Self.tblPayment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSeller" EntityType="Self.tblSeller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTransaction" EntityType="Self.tblTransaction" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Table_Delivery" Association="Self.FK_Table_Delivery">
+            <End Role="tblDelivery" EntitySet="tblDelivery" />
+            <End Role="Shipment" EntitySet="Shipment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable_1" Association="Self.FK_Table_ToTable_1">
+            <End Role="tblLocation" EntitySet="tblLocation" />
+            <End Role="Shipment" EntitySet="Shipment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable_2" Association="Self.FK_Table_ToTable_2">
+            <End Role="tblLocation" EntitySet="tblLocation" />
+            <End Role="Shipment" EntitySet="Shipment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBuyer_TotblLocation" Association="Self.FK_tblBuyer_TotblLocation">
+            <End Role="tblLocation" EntitySet="tblLocation" />
+            <End Role="tblBuyer" EntitySet="tblBuyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBuyer_TotblLogin" Association="Self.FK_tblBuyer_TotblLogin">
+            <End Role="tblLogin" EntitySet="tblLogin" />
+            <End Role="tblBuyer" EntitySet="tblBuyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDelivery_ToBuyer" Association="Self.FK_tblDelivery_ToBuyer">
+            <End Role="tblBuyer" EntitySet="tblBuyer" />
+            <End Role="tblDelivery" EntitySet="tblDelivery" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDelivery_ToProduct" Association="Self.FK_tblDelivery_ToProduct">
+            <End Role="tblProduct" EntitySet="tblProduct" />
+            <End Role="tblDelivery" EntitySet="tblDelivery" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPayment_ToBuyer" Association="Self.FK_tblPayment_ToBuyer">
+            <End Role="tblBuyer" EntitySet="tblBuyer" />
+            <End Role="tblPayment" EntitySet="tblPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_toSeller" Association="Self.FK_tblProduct_toSeller">
+            <End Role="tblSeller" EntitySet="tblSeller" />
+            <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSeller_ToLocation" Association="Self.FK_tblSeller_ToLocation">
+            <End Role="tblLocation" EntitySet="tblLocation" />
+            <End Role="tblSeller" EntitySet="tblSeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSeller_ToUser" Association="Self.FK_tblSeller_ToUser">
+            <End Role="tblLogin" EntitySet="tblLogin" />
+            <End Role="tblSeller" EntitySet="tblSeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTransaction_ToPayment" Association="Self.FK_tblTransaction_ToPayment">
+            <End Role="tblPayment" EntitySet="tblPayment" />
+            <End Role="tblTransaction" EntitySet="tblTransaction" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InventoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Shipment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeliverId" Type="Int32" Nullable="false" />
+          <Property Name="FromLocId" Type="Int32" Nullable="false" />
+          <Property Name="ToLocId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblDelivery" Relationship="Self.FK_Table_Delivery" FromRole="Shipment" ToRole="tblDelivery" />
+          <NavigationProperty Name="tblLocation" Relationship="Self.FK_Table_ToTable_1" FromRole="Shipment" ToRole="tblLocation" />
+          <NavigationProperty Name="tblLocation1" Relationship="Self.FK_Table_ToTable_2" FromRole="Shipment" ToRole="tblLocation" />
+        </EntityType>
+        <EntityType Name="tblBuyer">
+          <Key>
+            <PropertyRef Name="BuyerId" />
+          </Key>
+          <Property Name="BuyerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Verified" Type="Boolean" Nullable="false" />
+          <Property Name="LocationId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblLocation" Relationship="Self.FK_tblBuyer_TotblLocation" FromRole="tblBuyer" ToRole="tblLocation" />
+          <NavigationProperty Name="tblLogin" Relationship="Self.FK_tblBuyer_TotblLogin" FromRole="tblBuyer" ToRole="tblLogin" />
+          <NavigationProperty Name="tblDeliveries" Relationship="Self.FK_tblDelivery_ToBuyer" FromRole="tblBuyer" ToRole="tblDelivery" />
+          <NavigationProperty Name="tblPayments" Relationship="Self.FK_tblPayment_ToBuyer" FromRole="tblBuyer" ToRole="tblPayment" />
+        </EntityType>
+        <EntityType Name="tblDelivery">
+          <Key>
+            <PropertyRef Name="DeliverId" />
+          </Key>
+          <Property Name="DeliverId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Medium" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TrackingNo" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="BuyerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Shipments" Relationship="Self.FK_Table_Delivery" FromRole="tblDelivery" ToRole="Shipment" />
+          <NavigationProperty Name="tblBuyer" Relationship="Self.FK_tblDelivery_ToBuyer" FromRole="tblDelivery" ToRole="tblBuyer" />
+          <NavigationProperty Name="tblProduct" Relationship="Self.FK_tblDelivery_ToProduct" FromRole="tblDelivery" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblLocation">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Zipcode" Type="Int32" />
+          <Property Name="Phone" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Facebook" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Shipments" Relationship="Self.FK_Table_ToTable_1" FromRole="tblLocation" ToRole="Shipment" />
+          <NavigationProperty Name="Shipments1" Relationship="Self.FK_Table_ToTable_2" FromRole="tblLocation" ToRole="Shipment" />
+          <NavigationProperty Name="tblBuyers" Relationship="Self.FK_tblBuyer_TotblLocation" FromRole="tblLocation" ToRole="tblBuyer" />
+          <NavigationProperty Name="tblSellers" Relationship="Self.FK_tblSeller_ToLocation" FromRole="tblLocation" ToRole="tblSeller" />
+        </EntityType>
+        <EntityType Name="tblLogin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Access" Type="Boolean" Nullable="false" />
+          <Property Name="Lock" Type="Boolean" Nullable="false" />
+          <Property Name="Last_Login" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblBuyers" Relationship="Self.FK_tblBuyer_TotblLogin" FromRole="tblLogin" ToRole="tblBuyer" />
+          <NavigationProperty Name="tblSellers" Relationship="Self.FK_tblSeller_ToUser" FromRole="tblLogin" ToRole="tblSeller" />
+        </EntityType>
+        <EntityType Name="tblPayment">
+          <Key>
+            <PropertyRef Name="PaymentId" />
+          </Key>
+          <Property Name="PaymentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TotalAmount" Type="Int32" />
+          <Property Name="PaidAmount" Type="Int32" />
+          <Property Name="RemAmount" Type="Int32" />
+          <Property Name="PaidStatus" Type="Boolean" Nullable="false" />
+          <Property Name="TransactionId" Type="Int32" Nullable="false" />
+          <Property Name="BuyerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblBuyer" Relationship="Self.FK_tblPayment_ToBuyer" FromRole="tblPayment" ToRole="tblBuyer" />
+          <NavigationProperty Name="tblTransactions" Relationship="Self.FK_tblTransaction_ToPayment" FromRole="tblPayment" ToRole="tblTransaction" />
+        </EntityType>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Size" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Color" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SellerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblDeliveries" Relationship="Self.FK_tblDelivery_ToProduct" FromRole="tblProduct" ToRole="tblDelivery" />
+          <NavigationProperty Name="tblSeller" Relationship="Self.FK_tblProduct_toSeller" FromRole="tblProduct" ToRole="tblSeller" />
+        </EntityType>
+        <EntityType Name="tblSeller">
+          <Key>
+            <PropertyRef Name="SellerId" />
+          </Key>
+          <Property Name="SellerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="tblLocation" Relationship="Self.FK_tblSeller_ToLocation" FromRole="tblSeller" ToRole="tblLocation" />
+          <NavigationProperty Name="tblLogin" Relationship="Self.FK_tblSeller_ToUser" FromRole="tblSeller" ToRole="tblLogin" />
+          <NavigationProperty Name="tblProducts" Relationship="Self.FK_tblProduct_toSeller" FromRole="tblSeller" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblTransaction">
+          <Key>
+            <PropertyRef Name="TranId" />
+          </Key>
+          <Property Name="TranId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Time" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Method" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblPayment" Relationship="Self.FK_tblTransaction_ToPayment" FromRole="tblTransaction" ToRole="tblPayment" />
+        </EntityType>
+        <Association Name="FK_Table_Delivery">
+          <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="1" />
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDelivery">
+              <PropertyRef Name="DeliverId" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="DeliverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable_1">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="FromLocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable_2">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+          <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="ToLocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBuyer_TotblLocation">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="tblBuyer">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblBuyer_TotblLogin">
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="1" />
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLogin">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblBuyer">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDelivery_ToBuyer">
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="1" />
+          <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBuyer">
+              <PropertyRef Name="BuyerId" />
+            </Principal>
+            <Dependent Role="tblDelivery">
+              <PropertyRef Name="BuyerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPayment_ToBuyer">
+          <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="1" />
+          <End Role="tblPayment" Type="Self.tblPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBuyer">
+              <PropertyRef Name="BuyerId" />
+            </Principal>
+            <Dependent Role="tblPayment">
+              <PropertyRef Name="BuyerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDelivery_ToProduct">
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1" />
+          <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="tblDelivery">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSeller_ToLocation">
+          <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="0..1" />
+          <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLocation">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="tblSeller">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSeller_ToUser">
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="0..1" />
+          <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblLogin">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblSeller">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTransaction_ToPayment">
+          <End Role="tblPayment" Type="Self.tblPayment" Multiplicity="1" />
+          <End Role="tblTransaction" Type="Self.tblTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPayment">
+              <PropertyRef Name="PaymentId" />
+            </Principal>
+            <Dependent Role="tblTransaction">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_toSeller">
+          <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSeller">
+              <PropertyRef Name="SellerId" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="SellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventoryEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Shipments" EntityType="Self.Shipment" />
+          <EntitySet Name="tblBuyers" EntityType="Self.tblBuyer" />
+          <EntitySet Name="tblDeliveries" EntityType="Self.tblDelivery" />
+          <EntitySet Name="tblLocations" EntityType="Self.tblLocation" />
+          <EntitySet Name="tblLogins" EntityType="Self.tblLogin" />
+          <EntitySet Name="tblPayments" EntityType="Self.tblPayment" />
+          <EntitySet Name="tblProducts" EntityType="Self.tblProduct" />
+          <EntitySet Name="tblSellers" EntityType="Self.tblSeller" />
+          <EntitySet Name="tblTransactions" EntityType="Self.tblTransaction" />
+          <AssociationSet Name="FK_Table_Delivery" Association="Self.FK_Table_Delivery">
+            <End Role="tblDelivery" EntitySet="tblDeliveries" />
+            <End Role="Shipment" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable_1" Association="Self.FK_Table_ToTable_1">
+            <End Role="tblLocation" EntitySet="tblLocations" />
+            <End Role="Shipment" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable_2" Association="Self.FK_Table_ToTable_2">
+            <End Role="tblLocation" EntitySet="tblLocations" />
+            <End Role="Shipment" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBuyer_TotblLocation" Association="Self.FK_tblBuyer_TotblLocation">
+            <End Role="tblLocation" EntitySet="tblLocations" />
+            <End Role="tblBuyer" EntitySet="tblBuyers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblBuyer_TotblLogin" Association="Self.FK_tblBuyer_TotblLogin">
+            <End Role="tblLogin" EntitySet="tblLogins" />
+            <End Role="tblBuyer" EntitySet="tblBuyers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDelivery_ToBuyer" Association="Self.FK_tblDelivery_ToBuyer">
+            <End Role="tblBuyer" EntitySet="tblBuyers" />
+            <End Role="tblDelivery" EntitySet="tblDeliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPayment_ToBuyer" Association="Self.FK_tblPayment_ToBuyer">
+            <End Role="tblBuyer" EntitySet="tblBuyers" />
+            <End Role="tblPayment" EntitySet="tblPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDelivery_ToProduct" Association="Self.FK_tblDelivery_ToProduct">
+            <End Role="tblProduct" EntitySet="tblProducts" />
+            <End Role="tblDelivery" EntitySet="tblDeliveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSeller_ToLocation" Association="Self.FK_tblSeller_ToLocation">
+            <End Role="tblLocation" EntitySet="tblLocations" />
+            <End Role="tblSeller" EntitySet="tblSellers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSeller_ToUser" Association="Self.FK_tblSeller_ToUser">
+            <End Role="tblLogin" EntitySet="tblLogins" />
+            <End Role="tblSeller" EntitySet="tblSellers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTransaction_ToPayment" Association="Self.FK_tblTransaction_ToPayment">
+            <End Role="tblPayment" EntitySet="tblPayments" />
+            <End Role="tblTransaction" EntitySet="tblTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_toSeller" Association="Self.FK_tblProduct_toSeller">
+            <End Role="tblSeller" EntitySet="tblSellers" />
+            <End Role="tblProduct" EntitySet="tblProducts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InventoryModelStoreContainer" CdmEntityContainer="InventoryEntities1">
+          <EntitySetMapping Name="Shipments">
+            <EntityTypeMapping TypeName="InventoryModel.Shipment">
+              <MappingFragment StoreEntitySet="Shipment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DeliverId" ColumnName="DeliverId" />
+                <ScalarProperty Name="FromLocId" ColumnName="FromLocId" />
+                <ScalarProperty Name="ToLocId" ColumnName="ToLocId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblBuyers">
+            <EntityTypeMapping TypeName="InventoryModel.tblBuyer">
+              <MappingFragment StoreEntitySet="tblBuyer">
+                <ScalarProperty Name="BuyerId" ColumnName="BuyerId" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="MName" ColumnName="MName" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="Verified" ColumnName="Verified" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblDeliveries">
+            <EntityTypeMapping TypeName="InventoryModel.tblDelivery">
+              <MappingFragment StoreEntitySet="tblDelivery">
+                <ScalarProperty Name="DeliverId" ColumnName="DeliverId" />
+                <ScalarProperty Name="Medium" ColumnName="Medium" />
+                <ScalarProperty Name="TrackingNo" ColumnName="TrackingNo" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="BuyerId" ColumnName="BuyerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLocations">
+            <EntityTypeMapping TypeName="InventoryModel.tblLocation">
+              <MappingFragment StoreEntitySet="tblLocation">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Facebook" ColumnName="Facebook" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLogins">
+            <EntityTypeMapping TypeName="InventoryModel.tblLogin">
+              <MappingFragment StoreEntitySet="tblLogin">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Access" ColumnName="Access" />
+                <ScalarProperty Name="Lock" ColumnName="Lock" />
+                <ScalarProperty Name="Last_Login" ColumnName="Last_Login" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPayments">
+            <EntityTypeMapping TypeName="InventoryModel.tblPayment">
+              <MappingFragment StoreEntitySet="tblPayment">
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="RemAmount" ColumnName="RemAmount" />
+                <ScalarProperty Name="PaidStatus" ColumnName="PaidStatus" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="BuyerId" ColumnName="BuyerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProducts">
+            <EntityTypeMapping TypeName="InventoryModel.tblProduct">
+              <MappingFragment StoreEntitySet="tblProduct">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSellers">
+            <EntityTypeMapping TypeName="InventoryModel.tblSeller">
+              <MappingFragment StoreEntitySet="tblSeller">
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="MName" ColumnName="MName" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTransactions">
+            <EntityTypeMapping TypeName="InventoryModel.tblTransaction">
+              <MappingFragment StoreEntitySet="tblTransaction">
+                <ScalarProperty Name="TranId" ColumnName="TranId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Method" ColumnName="Method" />
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

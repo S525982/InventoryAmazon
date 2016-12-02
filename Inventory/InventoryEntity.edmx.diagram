@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="600f02d8018d4b6ba1fa49bb39e24038" Name="Diagram1">
+        <EntityTypeShape EntityType="InventoryModel.Shipment" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblBuyer" Width="1.5" PointX="6" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblDelivery" Width="1.5" PointX="8.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblLocation" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblLogin" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblPayment" Width="1.5" PointX="8.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblProduct" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblSeller" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryModel.tblTransaction" Width="1.5" PointX="10.5" PointY="10.5" IsExpanded="true" />
+        <AssociationConnector Association="InventoryModel.FK_Table_Delivery" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_Table_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_Table_ToTable_2" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblBuyer_TotblLocation" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblBuyer_TotblLogin" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblDelivery_ToBuyer" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblPayment_ToBuyer" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblDelivery_ToProduct" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblSeller_ToLocation" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblSeller_ToUser" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblTransaction_ToPayment" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryModel.FK_tblProduct_toSeller" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

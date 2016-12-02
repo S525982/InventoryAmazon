@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InventoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Shipment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DeliverId" Type="int" Nullable="false" />
+    <Property Name="FromLocId" Type="int" Nullable="false" />
+    <Property Name="ToLocId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblBuyer">
+    <Key>
+      <PropertyRef Name="BuyerId" />
+    </Key>
+    <Property Name="BuyerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FName" Type="varchar" MaxLength="30" />
+    <Property Name="MName" Type="varchar" MaxLength="30" />
+    <Property Name="LName" Type="varchar" MaxLength="30" />
+    <Property Name="Verified" Type="bit" Nullable="false" />
+    <Property Name="LocationId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblDelivery">
+    <Key>
+      <PropertyRef Name="DeliverId" />
+    </Key>
+    <Property Name="DeliverId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Medium" Type="varchar(max)" />
+    <Property Name="TrackingNo" Type="int" />
+    <Property Name="Status" Type="varchar" MaxLength="25" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="BuyerId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblLocation">
+    <Key>
+      <PropertyRef Name="LocationId" />
+    </Key>
+    <Property Name="LocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Address" Type="varchar" MaxLength="50" />
+    <Property Name="City" Type="varchar" MaxLength="50" />
+    <Property Name="State" Type="varchar" MaxLength="25" />
+    <Property Name="Zipcode" Type="int" />
+    <Property Name="Phone" Type="int" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Facebook" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblLogin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="30" />
+    <Property Name="Password" Type="varchar" MaxLength="30" />
+    <Property Name="Access" Type="bit" Nullable="false" />
+    <Property Name="Lock" Type="bit" Nullable="false" />
+    <Property Name="Last_Login" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tblPayment">
+    <Key>
+      <PropertyRef Name="PaymentId" />
+    </Key>
+    <Property Name="PaymentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TotalAmount" Type="int" />
+    <Property Name="PaidAmount" Type="int" />
+    <Property Name="RemAmount" Type="int" />
+    <Property Name="PaidStatus" Type="bit" Nullable="false" />
+    <Property Name="TransactionId" Type="int" Nullable="false" />
+    <Property Name="BuyerId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblProduct">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="30" />
+    <Property Name="Code" Type="varchar" MaxLength="30" />
+    <Property Name="Size" Type="varchar" MaxLength="30" />
+    <Property Name="Color" Type="varchar" MaxLength="30" />
+    <Property Name="Amount" Type="varchar" MaxLength="30" />
+    <Property Name="Comment" Type="varchar(max)" />
+    <Property Name="SellerId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblSeller">
+    <Key>
+      <PropertyRef Name="SellerId" />
+    </Key>
+    <Property Name="SellerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FName" Type="varchar" MaxLength="30" />
+    <Property Name="MName" Type="varchar" MaxLength="30" />
+    <Property Name="LName" Type="varchar" MaxLength="30" />
+    <Property Name="LocationId" Type="int" />
+    <Property Name="UserId" Type="int" />
+  </EntityType>
+  <EntityType Name="tblTransaction">
+    <Key>
+      <PropertyRef Name="TranId" />
+    </Key>
+    <Property Name="TranId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="date" />
+    <Property Name="Time" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="Method" Type="varchar" MaxLength="30" />
+    <Property Name="PaymentId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Table_Delivery">
+    <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="1" />
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblDelivery">
+        <PropertyRef Name="DeliverId" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="DeliverId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_ToTable_1">
+    <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLocation">
+        <PropertyRef Name="LocationId" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="FromLocId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_ToTable_2">
+    <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+    <End Role="Shipment" Type="Self.Shipment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLocation">
+        <PropertyRef Name="LocationId" />
+      </Principal>
+      <Dependent Role="Shipment">
+        <PropertyRef Name="ToLocId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblBuyer_TotblLocation">
+    <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="1" />
+    <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLocation">
+        <PropertyRef Name="LocationId" />
+      </Principal>
+      <Dependent Role="tblBuyer">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblBuyer_TotblLogin">
+    <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="1" />
+    <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLogin">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tblBuyer">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblDelivery_ToBuyer">
+    <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="1" />
+    <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblBuyer">
+        <PropertyRef Name="BuyerId" />
+      </Principal>
+      <Dependent Role="tblDelivery">
+        <PropertyRef Name="BuyerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblDelivery_ToProduct">
+    <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1" />
+    <End Role="tblDelivery" Type="Self.tblDelivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblProduct">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="tblDelivery">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblPayment_ToBuyer">
+    <End Role="tblBuyer" Type="Self.tblBuyer" Multiplicity="1" />
+    <End Role="tblPayment" Type="Self.tblPayment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblBuyer">
+        <PropertyRef Name="BuyerId" />
+      </Principal>
+      <Dependent Role="tblPayment">
+        <PropertyRef Name="BuyerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblProduct_toSeller">
+    <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="1" />
+    <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblSeller">
+        <PropertyRef Name="SellerId" />
+      </Principal>
+      <Dependent Role="tblProduct">
+        <PropertyRef Name="SellerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblSeller_ToLocation">
+    <End Role="tblLocation" Type="Self.tblLocation" Multiplicity="0..1" />
+    <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLocation">
+        <PropertyRef Name="LocationId" />
+      </Principal>
+      <Dependent Role="tblSeller">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblSeller_ToUser">
+    <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="0..1" />
+    <End Role="tblSeller" Type="Self.tblSeller" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblLogin">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tblSeller">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblTransaction_ToPayment">
+    <End Role="tblPayment" Type="Self.tblPayment" Multiplicity="1" />
+    <End Role="tblTransaction" Type="Self.tblTransaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblPayment">
+        <PropertyRef Name="PaymentId" />
+      </Principal>
+      <Dependent Role="tblTransaction">
+        <PropertyRef Name="PaymentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InventoryModelStoreContainer">
+    <EntitySet Name="Shipment" EntityType="Self.Shipment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblBuyer" EntityType="Self.tblBuyer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblDelivery" EntityType="Self.tblDelivery" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblLocation" EntityType="Self.tblLocation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblLogin" EntityType="Self.tblLogin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblPayment" EntityType="Self.tblPayment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSeller" EntityType="Self.tblSeller" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTransaction" EntityType="Self.tblTransaction" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Table_Delivery" Association="Self.FK_Table_Delivery">
+      <End Role="tblDelivery" EntitySet="tblDelivery" />
+      <End Role="Shipment" EntitySet="Shipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_ToTable_1" Association="Self.FK_Table_ToTable_1">
+      <End Role="tblLocation" EntitySet="tblLocation" />
+      <End Role="Shipment" EntitySet="Shipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_ToTable_2" Association="Self.FK_Table_ToTable_2">
+      <End Role="tblLocation" EntitySet="tblLocation" />
+      <End Role="Shipment" EntitySet="Shipment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblBuyer_TotblLocation" Association="Self.FK_tblBuyer_TotblLocation">
+      <End Role="tblLocation" EntitySet="tblLocation" />
+      <End Role="tblBuyer" EntitySet="tblBuyer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblBuyer_TotblLogin" Association="Self.FK_tblBuyer_TotblLogin">
+      <End Role="tblLogin" EntitySet="tblLogin" />
+      <End Role="tblBuyer" EntitySet="tblBuyer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblDelivery_ToBuyer" Association="Self.FK_tblDelivery_ToBuyer">
+      <End Role="tblBuyer" EntitySet="tblBuyer" />
+      <End Role="tblDelivery" EntitySet="tblDelivery" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblDelivery_ToProduct" Association="Self.FK_tblDelivery_ToProduct">
+      <End Role="tblProduct" EntitySet="tblProduct" />
+      <End Role="tblDelivery" EntitySet="tblDelivery" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblPayment_ToBuyer" Association="Self.FK_tblPayment_ToBuyer">
+      <End Role="tblBuyer" EntitySet="tblBuyer" />
+      <End Role="tblPayment" EntitySet="tblPayment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblProduct_toSeller" Association="Self.FK_tblProduct_toSeller">
+      <End Role="tblSeller" EntitySet="tblSeller" />
+      <End Role="tblProduct" EntitySet="tblProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblSeller_ToLocation" Association="Self.FK_tblSeller_ToLocation">
+      <End Role="tblLocation" EntitySet="tblLocation" />
+      <End Role="tblSeller" EntitySet="tblSeller" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblSeller_ToUser" Association="Self.FK_tblSeller_ToUser">
+      <End Role="tblLogin" EntitySet="tblLogin" />
+      <End Role="tblSeller" EntitySet="tblSeller" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblTransaction_ToPayment" Association="Self.FK_tblTransaction_ToPayment">
+      <End Role="tblPayment" EntitySet="tblPayment" />
+      <End Role="tblTransaction" EntitySet="tblTransaction" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

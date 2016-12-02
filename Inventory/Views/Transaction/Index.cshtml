@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Inventory.tblTransaction>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Method)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblPayment.PaymentId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Method)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblPayment.PaymentId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TranId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TranId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TranId })
+        </td>
+    </tr>
+}
+
+</table>
